@@ -1,0 +1,126 @@
+/*********Desarrollado por Patrick Jaque***************/
+
+var scaledX;
+var scaledY;
+
+var gameWidth = window.innerWidth-20;
+var gameHeight = window.innerHeight-20;
+
+var dispositivo;
+var dispositiveName = navigator.userAgent.toLowerCase();
+var osPlatform = navigator.platform;
+
+var rezisable = true;
+
+var fixedWidth  =800;
+var fixedHeight =600;
+
+function iniciarResponsive(){
+	scaledX = canvas.width/ canvas.offsetWidth;
+    scaledY = canvas.height/ canvas.offsetHeight;
+	console.log("canvas " + canvas);
+	
+	OnResizeCalled(rezisable);
+	setPlatForm();
+	window.addEventListener("resize", OnResizeCalled, false);
+	window.addEventListener('orientationchange', doOnOrientationChange);
+	
+}
+
+
+function OnResizeCalled() {
+	console.log("rezisable " + rezisable );
+	if(rezisable == true)
+	{
+        var gameWidth = window.innerWidth - 20;
+        var gameHeight = window.innerHeight - 20;
+        var scaleToFitX = gameWidth / 	fixedWidth ;
+        var scaleToFitY = gameHeight / 	fixedHeight;
+    
+        var currentScreenRatio = gameWidth / gameHeight;
+        var optimalRatio = Math.min(scaleToFitX, scaleToFitY);
+    
+        if (currentScreenRatio >= 1.785 && currentScreenRatio <= 1.79) {
+            canvas.style.width = gameWidth + "px";
+            canvas.style.height = gameHeight + "px";
+        }
+        else {
+            canvas.style.width = 	fixedWidth  * optimalRatio + "px";
+            canvas.style.height = 	fixedHeight * optimalRatio + "px";
+        }
+        
+        scaledX = canvas.width/ canvas.offsetWidth;
+        scaledY = canvas.height/ canvas.offsetHeight;
+	}
+}
+
+function doOnOrientationChange()
+  {
+	rezisable = true;
+    switch(window.orientation) 
+    {  
+      case -90: break;
+      case 90:
+        console.log('landscape');
+        break; 
+    }
+	rezisable = false;
+  }
+  
+
+function setPlatForm() {
+			var screenWidth = window.screen.availWidth;
+			var screenHeight = window.screen.availHeight;
+		
+			if (screenWidth < 599) {
+
+				if (osPlatform.search("iphone")) {
+					dispositivo = "mobile";
+					rezisable = false;
+				} else if (dispositiveName.search("ipod")) {
+					dispositivo = "ipod";
+					dispositivo = "mobile";
+					rezisable = false;
+				} else if (dispositiveName.search("android")) {
+					dispositivo = "mobile";
+					rezisable = false;
+				}
+				
+				screen.style.visibility="hidden";
+		
+			} else if (screenWidth > 599 && screenWidth < 1025) {
+				if (dispositiveName.search("ipad")) {
+					dispositivo = "tablet";
+					rezisable = false;
+				} else if (dispositiveName.search("android")) {
+					dispositivo = "tablet";
+					rezisable = false;
+				}
+				
+			} else if (screenWidth > 1024) {
+				if (osPlatform == "Win32") {
+					dispositivo = "pc";
+					rezisable = true;
+				} else {
+					dispositivo = "pc";
+					rezisable = true;
+				}
+
+			} else if (screenWidth > 1366) {
+					rezisable = true;
+				if (osPlatform == "Win32") {
+					dispositivo = "pc";
+					rezisable = true;
+				} else {
+					dispositivo = "pc";
+					rezisable = true;
+				}
+			}
+			console.log("dispositivo " + dispositivo);
+		}
+
+
+		
+
+
+
